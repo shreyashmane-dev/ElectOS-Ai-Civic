@@ -23,9 +23,15 @@ const requestSchema = z.object({
       email: z.string().optional(),
       age: z.number().optional(),
       location: z.string().optional(),
+      language: z.string().optional(),
       voterStatus: z.enum(["registered", "not_registered", "unsure"]).optional(),
       preferences: z.array(z.string()).optional(),
       readinessScore: z.number().optional(),
+    })
+    .optional(),
+  settings: z
+    .object({
+      language: z.string().optional(),
     })
     .optional(),
 });

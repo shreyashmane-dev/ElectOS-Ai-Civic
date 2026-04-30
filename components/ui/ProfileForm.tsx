@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { languageOptions } from "@/context/AppSettingsContext";
 import { useAuth } from "@/context/AuthContext";
 import { parseJson } from "@/utils/api";
 import type { UserProfile } from "@/types";
@@ -11,6 +12,7 @@ const defaultProfile: UserProfile = {
   email: "",
   age: 18,
   location: "",
+  language: "en",
   voterStatus: "unsure",
   preferences: [],
 };
@@ -103,6 +105,17 @@ export function ProfileForm({
         onChange={(event) => setProfile({ ...profile, location: event.target.value })}
         className="rounded-lg border-b border-outline-variant bg-surface-container-low px-4 py-3 text-on-surface outline-none transition-colors focus:border-primary-container focus:bg-surface-container"
       />
+      <select
+        value={profile.language ?? "en"}
+        onChange={(event) => setProfile({ ...profile, language: event.target.value })}
+        className="rounded-lg border-b border-outline-variant bg-surface-container-low px-4 py-3 text-on-surface outline-none transition-colors focus:border-primary-container focus:bg-surface-container"
+      >
+        {languageOptions.map((option) => (
+          <option key={option.code} value={option.code}>
+            {option.label}
+          </option>
+        ))}
+      </select>
       <select
         value={profile.voterStatus}
         onChange={(event) =>

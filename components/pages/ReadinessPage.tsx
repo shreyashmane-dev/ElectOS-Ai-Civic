@@ -4,11 +4,13 @@ import { useMemo, useState } from "react";
 import { ConsoleShell } from "@/components/layout/ConsoleShell";
 import { ResponseCard } from "@/components/ui/ResponseCard";
 import { ProfileForm } from "@/components/ui/ProfileForm";
+import { useAppSettings } from "@/context/AppSettingsContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { parseJson } from "@/utils/api";
 import type { AgentResult, ReadinessBreakdown, UserProfile } from "@/types";
 
 export function ReadinessPage() {
+  const { settings } = useAppSettings();
   const { profile, setProfile, loading: profileLoading, isComplete } = useUserProfile();
   const [result, setResult] = useState<AgentResult<ReadinessBreakdown> | null>(null);
   const [loading, setLoading] = useState(false);
@@ -21,6 +23,9 @@ export function ReadinessPage() {
 
     return profile?.readinessScore;
   }, [profile?.readinessScore, result]);
+
+  const preferredLanguage =
+    settings.aiTranslationMode === "profile" ? profile?.language ?? settings.language : settings.language;
 
   function handleProfileSaved(nextProfile: UserProfile) {
     setProfile(nextProfile);
@@ -49,6 +54,9 @@ export function ReadinessPage() {
                 content: "Calculate my civic readiness using my saved profile and recommend next actions.",
               },
             ],
+            settings: {
+              language: preferredLanguage,
+            },
           }),
         }),
       );

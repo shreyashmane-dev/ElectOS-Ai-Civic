@@ -3,6 +3,9 @@ import type { ChatMessage, UserProfile } from "@/types";
 export function buildAgentContext(input: {
   history?: ChatMessage[];
   profile?: Partial<UserProfile>;
+  settings?: {
+    language?: string;
+  };
 }) {
   const sections: string[] = [];
   const now = new Date().toISOString();
@@ -11,6 +14,10 @@ export function buildAgentContext(input: {
 
   if (input.profile) {
     sections.push(`Profile:\n${JSON.stringify(input.profile, null, 2)}`);
+  }
+
+  if (input.settings?.language) {
+    sections.push(`Preferred response language:\n${input.settings.language}`);
   }
 
   if (input.history?.length) {

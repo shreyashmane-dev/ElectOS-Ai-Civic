@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { parseJson } from "@/utils/api";
 import type { AgentResult, ChatMessage, UserProfile } from "@/types";
 
-export function useChat(profile?: Partial<UserProfile>) {
+export function useChat(profile?: Partial<UserProfile>, language?: string) {
   const storageKey = useMemo(
     () => `electos-chat:${profile?.id ?? profile?.email ?? "guest"}`,
     [profile?.email, profile?.id],
@@ -75,6 +75,9 @@ export function useChat(profile?: Partial<UserProfile>) {
             query,
             history: nextMessages,
             profile,
+            settings: {
+              language,
+            },
           }),
         }),
       );

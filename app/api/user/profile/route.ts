@@ -11,6 +11,7 @@ const userProfileSchema = z.object({
   email: z.string().email(),
   age: z.number().min(16).max(120),
   location: z.string().min(2),
+  language: z.string().optional(),
   voterStatus: z.enum(["registered", "not_registered", "unsure"]),
   preferences: z.array(z.string()).default([]),
   readinessScore: z.number().optional(),

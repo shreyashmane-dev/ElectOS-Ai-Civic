@@ -11,6 +11,7 @@ export interface UserProfile {
   email: string;
   age: number;
   location: string;
+  language?: string;
   voterStatus: "registered" | "not_registered" | "unsure";
   preferences: string[];
   readinessScore?: number;
@@ -51,6 +52,9 @@ export interface QueryRequest {
   query: string;
   history?: ChatMessage[];
   profile?: Partial<UserProfile>;
+  settings?: {
+    language?: string;
+  };
 }
 
 export interface ReadinessBreakdown {

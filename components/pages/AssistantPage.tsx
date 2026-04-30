@@ -4,6 +4,7 @@ import { ConsoleShell } from "@/components/layout/ConsoleShell";
 import { ChatComposer } from "@/components/ui/ChatComposer";
 import { ProfileForm } from "@/components/ui/ProfileForm";
 import { ResponseCard } from "@/components/ui/ResponseCard";
+import { useAppSettings } from "@/context/AppSettingsContext";
 import { useChat } from "@/hooks/useChat";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import type { UserProfile } from "@/types";
@@ -16,8 +17,14 @@ const shortcuts = [
 ];
 
 export function AssistantPage() {
+  const { settings } = useAppSettings();
   const { profile, setProfile, loading: profileLoading, isComplete } = useUserProfile();
-  const { messages, lastResult, loading, error, sendMessage, clearConversation } = useChat(profile);
+  const preferredLanguage =
+    settings.aiTranslationMode === "profile" ? profile?.language ?? settings.language : settings.language;
+  const { messages, lastResult, loading, error, sendMessage, clearConversation } = useChat(
+    profile,
+    preferredLanguage,
+  );
 
   function handleProfileSaved(nextProfile: UserProfile) {
     setProfile(nextProfile);
@@ -62,7 +69,12 @@ export function AssistantPage() {
             </div>
 
             <div className="mt-6">
-              <ChatComposer onSend={sendMessage} loading={loading} />
+              <ChatComposer
+                onSend={sendMessage}
+                loading={loading}
+                speechEnabled={settings.speechInputEnabled}
+                speechLanguage={preferredLanguage}
+              />
             </div>
           </div>
 
@@ -135,8 +147,14 @@ export function AssistantPage() {
                   Model
                 </span>
                 <p className="mt-2 text-sm leading-7 text-on-surface">
-                  Vertex AI with stricter response normalization and better tab-specific prompts.
+                  Vertex AI with stricter response normalization, multilingual replies, and better tab-specific prompts.
                 </p>
+              </div>
+              <div className="rounded-2xl border border-white/8 bg-surface-container-lowest/50 p-4">
+                <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-on-surface-variant">
+                  Preferred language
+                </span>
+                <p className="mt-2 text-sm leading-7 text-on-surface">{preferredLanguage}</p>
               </div>
             </div>
           </div>

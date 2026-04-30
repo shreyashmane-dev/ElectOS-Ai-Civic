@@ -29,6 +29,7 @@ export async function runElectOSQuery(input: QueryRequest): Promise<AgentResult<
   const context = buildAgentContext({
     history: input.history,
     profile: input.profile,
+    settings: input.settings,
   });
 
   let result: AgentResult<ElectOSResultData>;

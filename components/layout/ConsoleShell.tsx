@@ -99,6 +99,18 @@ export function ConsoleShell({
             <span className="material-symbols-outlined text-[22px]">account_circle</span>
             <span className="text-[11px]">My Profile</span>
           </Link>
+          <Link
+            href="/settings"
+            className={cn(
+              "flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-bold uppercase tracking-wide transition-all duration-300",
+              pathname === "/settings"
+                ? "border border-primary/20 bg-primary/10 text-primary"
+                : "text-on-surface-variant hover:bg-white/5 hover:text-white",
+            )}
+          >
+            <span className="material-symbols-outlined text-[22px]">settings</span>
+            <span className="text-[11px]">Settings</span>
+          </Link>
         </div>
       </nav>
 

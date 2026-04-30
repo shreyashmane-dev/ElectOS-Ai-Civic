@@ -3,17 +3,22 @@
 import { useState } from "react";
 import { ConsoleShell } from "@/components/layout/ConsoleShell";
 import { ResponseCard } from "@/components/ui/ResponseCard";
+import { useAppSettings } from "@/context/AppSettingsContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { parseJson } from "@/utils/api";
 import type { AgentResult, ChatMessage, MisinfoAssessment } from "@/types";
 
 export function FactCheckerPage() {
+  const { settings } = useAppSettings();
   const { profile } = useUserProfile();
   const [query, setQuery] = useState("");
   const [history, setHistory] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AgentResult<MisinfoAssessment> | null>(null);
+
+  const preferredLanguage =
+    settings.aiTranslationMode === "profile" ? profile?.language ?? settings.language : settings.language;
 
   async function handleAnalyze() {
     if (!query.trim()) {
@@ -41,6 +46,9 @@ export function FactCheckerPage() {
             query: query.trim(),
             history: nextHistory,
             profile,
+            settings: {
+              language: preferredLanguage,
+            },
           }),
         }),
       );

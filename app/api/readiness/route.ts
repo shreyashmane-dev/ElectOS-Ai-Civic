@@ -15,6 +15,7 @@ const requestSchema = z.object({
     email: z.string().email(),
     age: z.number(),
     location: z.string(),
+    language: z.string().optional(),
     voterStatus: z.enum(["registered", "not_registered", "unsure"]),
     preferences: z.array(z.string()).default([]),
     readinessScore: z.number().optional(),
@@ -28,6 +29,11 @@ const requestSchema = z.object({
       }),
     )
     .optional(),
+  settings: z
+    .object({
+      language: z.string().optional(),
+    })
+    .optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -35,7 +41,11 @@ export async function POST(request: NextRequest) {
     const body = requestSchema.parse(await request.json());
     const result = await readinessAgent({
       query: body.query,
-      context: buildAgentContext({ profile: body.profile, history: body.history }),
+      context: buildAgentContext({
+        profile: body.profile,
+        history: body.history,
+        settings: body.settings,
+      }),
     });
 
     await saveUserProfile({

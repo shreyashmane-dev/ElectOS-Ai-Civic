@@ -4,6 +4,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
+import { AppSettingsProvider } from "@/context/AppSettingsContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,9 +36,9 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}>
         <AuthProvider>
-          <ThemeProvider>
-            {children}
-          </ThemeProvider>
+          <AppSettingsProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+          </AppSettingsProvider>
         </AuthProvider>
       </body>
     </html>
