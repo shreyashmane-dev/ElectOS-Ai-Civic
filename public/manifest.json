@@ -1,0 +1,8 @@
+{
+  "name": "ElectOS",
+  "short_name": "ElectOS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f2e8",
+  "theme_color": "#285943"
+}
